@@ -79,5 +79,26 @@ public class Team {
     public void setRanking(int ranking) {
         this.ranking = ranking;
     }
+    @Override
+    public String toString() {
+        StringBuilder playerNames = new StringBuilder();
+        for (Player player : players) {
+            playerNames.append(player.getUsername()).append(", ");
+        }
+
+        StringBuilder tournamentTitles = new StringBuilder();
+        for (Tournament tournament : tournaments) {
+            tournamentTitles.append(tournament.getTitle()).append(", ");
+        }
+
+        return "Team{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", ranking=" + ranking +
+                ", players=[" + playerNames + "]" +
+                ", tournaments=[" + tournamentTitles + "]" +
+                '}';
+    }
+
 }
 

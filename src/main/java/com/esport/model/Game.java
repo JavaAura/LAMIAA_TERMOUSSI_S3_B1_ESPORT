@@ -61,4 +61,14 @@ public class Game {
     public void setAverageDuration(int averageDuration) {
         this.averageDuration = averageDuration;
     }
+    @Override
+    public String toString() {
+        return "Game{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", difficulty=" + difficulty +
+                ", averageDuration=" + averageDuration +
+                '}';
+    }
+
 }

@@ -161,4 +161,26 @@ public class Tournament {
     public void setStatus(TournamentStatus  status) {
         this.status = status;
     }
+    @Override
+    public String toString() {
+        StringBuilder teamNames = new StringBuilder();
+        for (Team team : teams) {
+            teamNames.append(team.getName()).append(", ");
+        }
+
+        return "Tournament{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", game='" + game + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", spectatorCount=" + spectatorCount +
+                ", teams=[" + teamNames + "]" +
+                ", estimatedDuration=" + estimatedDuration +
+                ", breakTime=" + breakTime +
+                ", ceremonyTime=" + ceremonyTime +
+                ", status=" + status +
+                '}';
+    }
+
 }
