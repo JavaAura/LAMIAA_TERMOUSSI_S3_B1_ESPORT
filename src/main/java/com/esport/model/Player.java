@@ -1,7 +1,7 @@
 package com.esport.model;
 
 import javax.persistence.*;
-
+import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "players")
 public class Player {
@@ -9,12 +9,15 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
+    @NotNull
     @Column(name = "age", nullable = false)
     private int age;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "team_id", nullable = true)
     private Team team;

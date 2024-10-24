@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "tournaments")
 public class Tournament {
@@ -13,33 +14,43 @@ public class Tournament {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @Column(name = "title", nullable = false)
     private String title;
 
+    @NotNull
     @Column(name = "game", nullable = false)
     private String game;
 
+    @NotNull
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
+    @NotNull
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
+    @NotNull
     @Column(name = "spectator_count")
     private int spectatorCount;
+
 
     @ManyToMany(mappedBy = "tournaments")
     private List<Team> teams = new ArrayList<>();
 
+    @NotNull
     @Column(name = "estimated_duration")
     private int estimatedDuration;
 
+    @NotNull
     @Column(name = "break_time")
     private int breakTime;
 
+    @NotNull
     @Column(name = "ceremony_time")
     private int ceremonyTime;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private TournamentStatus status;

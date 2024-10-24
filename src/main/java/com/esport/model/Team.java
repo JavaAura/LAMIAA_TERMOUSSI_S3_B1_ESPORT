@@ -3,6 +3,7 @@ package com.esport.model;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "teams")
 public class Team {
@@ -11,6 +12,7 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -24,6 +26,8 @@ public class Team {
             inverseJoinColumns = @JoinColumn(name = "tournament_id")
     )
     private List<Tournament> tournaments = new ArrayList<>();
+
+    @NotNull
     @Column(name = "ranking")
     private int ranking;
 

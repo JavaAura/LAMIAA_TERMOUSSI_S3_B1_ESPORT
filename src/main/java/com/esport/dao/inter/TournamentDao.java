@@ -10,4 +10,6 @@ public interface TournamentDao {
     Tournament save(Tournament tournament);
     Tournament update(Tournament tournament);
     void delete(Long id);
+
+    Long calculateEstimatedDurationOfTournament(Long tournamentId);
 }

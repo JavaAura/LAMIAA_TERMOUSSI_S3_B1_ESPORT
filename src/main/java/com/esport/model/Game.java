@@ -1,7 +1,7 @@
 package com.esport.model;
 
 import javax.persistence.*;
-
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "games")
@@ -11,14 +11,18 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
+    @NotNull
     @Column(name = "difficulty", nullable = false)
     private int difficulty;
 
+    @NotNull
     @Column(name = "average_duration", nullable = false)
     private int averageDuration;
+
 
     public Game(String name, int difficulty, int averageDuration) {
         this.name = name;

@@ -1,20 +1,22 @@
 package com.esport.dao.impl;
 
+import com.esport.dao.inter.TournamentDao;
+
+import javax.persistence.EntityManager;
+
 import com.esport.model.Tournament;
 import com.esport.util.JPAUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.esport.dao.inter.TournamentDao;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
-public class TournamentDaoImpl implements TournamentDao {
+public class TournamentDaoExtension implements TournamentDao {
 
     private EntityManager entityManager;
-    private static final Logger logger = LoggerFactory.getLogger(TournamentDaoImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(TournamentDaoExtension.class);
 
-    public TournamentDaoImpl() {
+    public TournamentDaoExtension() {
         this.entityManager = JPAUtil.getEntityManager();
     }
 
@@ -89,10 +91,8 @@ public class TournamentDaoImpl implements TournamentDao {
 
     @Override
     public Long calculateEstimatedDurationOfTournament(Long tournamentId) {
-//        calcul de base
-        long estimatedDuration =0;
-
-        return estimatedDuration;
+        //calcul avance
+      long duration=0;
+      return duration;
     }
-
 }
