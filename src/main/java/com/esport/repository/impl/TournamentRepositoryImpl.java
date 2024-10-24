@@ -1,9 +1,9 @@
 package com.esport.repository.impl;
 
-import com.esport.dao.impl.TeamDaoImpl;
-import com.esport.dao.inter.TeamDao;
-import com.esport.model.Team;
-import com.esport.repository.inter.TeamRepository;
+import com.esport.dao.impl.TournamentDaoImpl;
+import com.esport.dao.inter.TournamentDao;
+import com.esport.model.Tournament;
+import com.esport.repository.inter.TournamentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,17 +12,16 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.List;
 
-public class TeamRepositoryImpl implements TeamRepository {
-
-    private static final Logger logger = LoggerFactory.getLogger(TeamRepositoryImpl.class);
+public class TournamentRepositoryImpl implements TournamentRepository {
+    private static final Logger logger = LoggerFactory.getLogger(TournamentRepositoryImpl.class);
     private static final String PERSISTENCE_UNIT_NAME = "cycloneJPA";
-    private final TeamDao teamDAO;
+    private final TournamentDao tournamentDAO;
 
     private EntityManager entityManager;
     private EntityManagerFactory emf;
 
-    public TeamRepositoryImpl() {
-        this.teamDAO = new TeamDaoImpl();
+    public TournamentRepositoryImpl() {
+        this.tournamentDAO = new TournamentDaoImpl();
         initEntityManager();
     }
 
@@ -37,28 +36,28 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
-    public Team addTeam(Team team) {
-        return teamDAO.save(team);
+    public Tournament addTournament(Tournament tournament) {
+        return tournamentDAO.save(tournament);
     }
 
     @Override
-    public Team findTeamById(Long id) {
-        return teamDAO.findById(id);
+    public Tournament findTournamentById(Long id) {
+        return tournamentDAO.findById(id);
     }
 
     @Override
-    public List<Team> getAllTeams() {
-        return teamDAO.findAll();
+    public List<Tournament> getAllTournaments() {
+        return tournamentDAO.findAll();
     }
 
     @Override
-    public Team modifyTeam(Team team) {
-        return teamDAO.update(team);
+    public Tournament modifyTournament(Tournament tournament) {
+        return tournamentDAO.update(tournament);
     }
 
     @Override
-    public void removeTeam(Long id) {
-        teamDAO.delete(id);
+    public void removeTournament(Long id) {
+        tournamentDAO.delete(id);
     }
 
     public void close() {
@@ -70,5 +69,5 @@ public class TeamRepositoryImpl implements TeamRepository {
         }
         logger.info("EntityManager and EntityManagerFactory closed");
     }
-
 }
+
