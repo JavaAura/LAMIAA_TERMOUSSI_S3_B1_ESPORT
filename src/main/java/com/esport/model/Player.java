@@ -22,7 +22,7 @@ public class Player {
     @JoinColumn(name = "team_id", nullable = true)
     private Team team;
 
-
+    public Player() {}
     public Player(String username, int age, Team team) {
         this.username = username;
         this.age = age;

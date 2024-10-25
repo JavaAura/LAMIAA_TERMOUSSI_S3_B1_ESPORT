@@ -23,7 +23,7 @@ public class Game {
     @Column(name = "average_duration", nullable = false)
     private int averageDuration;
 
-
+    public Game() {}
     public Game(String name, int difficulty, int averageDuration) {
         this.name = name;
         this.difficulty = difficulty;
