@@ -215,43 +215,18 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
     private void addTeam() {
         System.out.print("Enter team name: ");
         String name = scanner.next();
-        List<Player> players = new ArrayList<>();
 
-        System.out.print("Enter number of players to add to the team: ");
-        int numPlayers = scanner.nextInt();
-        for (int i = 0; i < numPlayers; i++) {
-            System.out.print("Enter player ID: ");
-            Long playerId = scanner.nextLong();
-            Optional<Player> optionalPlayer = playerService.findPlayerById(playerId);
-            if (optionalPlayer.isPresent()) {
-                players.add(optionalPlayer.get());
-            } else {
-                System.out.println("Player with ID " + playerId + " not found. Skipping...");
-            }
-        }
-        List<Tournament> tournaments = new ArrayList<>();
-
-        System.out.print("Enter number of tournaments to add to the team: ");
-        int numTournaments = scanner.nextInt();
-        for (int i = 0; i < numTournaments; i++) {
-            System.out.print("Enter tournament ID: ");
-            Long tournamentId = scanner.nextLong();
-            Optional<Tournament> optionalTournament = tournamentService.findTournamentById(tournamentId);
-            if (optionalTournament.isPresent()) {
-                tournaments.add(optionalTournament.get());
-            } else {
-                System.out.println("Tournament with ID " + tournamentId + " not found. Skipping...");
-            }
-        }
         System.out.print("Enter team ranking: ");
         int ranking = scanner.nextInt();
 
         Team team = new Team();
         team.setName(name);
+        team.setRanking(ranking);
 
         teamService.addTeam(team);
-        System.out.println("Team added successfully.");
+        System.out.println("Team added successfully without tournament associations.");
     }
+
     private void updateTeam() {
         System.out.print("Enter team ID to update: ");
         Long teamId = scanner.nextLong();
@@ -365,14 +340,11 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
 
         System.out.print("Enter ceremony time (in minutes): ");
         int ceremonyTime = Integer.parseInt(scanner.nextLine());
-
         TournamentStatus status = getTournamentStatusFromUser();
-
         Tournament tournament = new Tournament(title, game, startDate, endDate, spectatorCount, new ArrayList<>(), estimatedDuration, breakTime, ceremonyTime, status);
-
         tournamentService.addTournament(tournament);
 
-        System.out.println("Tournament added successfully.");
+        System.out.println("Tournament added successfully without team associations.");
     }
 
     private TournamentStatus getTournamentStatusFromUser() {
