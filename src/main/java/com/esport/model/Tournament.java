@@ -18,9 +18,9 @@ public class Tournament {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @NotNull
-    @Column(name = "game", nullable = false)
-    private String game;
+    @ManyToOne
+    @JoinColumn(name = "game_id", nullable = false)
+    private Game game;
 
     @NotNull
     @Column(name = "start_date", nullable = false)
@@ -57,7 +57,7 @@ public class Tournament {
 
     public Tournament() {}
 
-    public Tournament(String title, String game, LocalDate startDate, LocalDate endDate,
+    public Tournament(String title, Game game, LocalDate startDate, LocalDate endDate,
                       int spectatorCount, List<Team> teams, int estimatedDuration,
                       int breakTimeBetweenMatches, int ceremonyTime, TournamentStatus status) {
         this.title = title;
@@ -88,11 +88,11 @@ public class Tournament {
         this.title = title;
     }
 
-    public String getGame() {
+    public Game getGame() {
         return game;
     }
 
-    public void setGame(String game) {
+    public void setGame(Game game) {
         this.game = game;
     }
 

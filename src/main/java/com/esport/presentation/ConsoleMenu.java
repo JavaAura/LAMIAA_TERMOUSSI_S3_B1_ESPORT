@@ -317,12 +317,18 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
         }
     }
     private void addTournament() {
+        scanner.nextLine();
         System.out.print("Enter tournament title: ");
         String title = scanner.nextLine();
-
-        System.out.print("Enter game name: ");
-        String game = scanner.nextLine();
-
+        System.out.print("Enter game ID: ");
+        Long gameId = scanner.nextLong();
+        scanner.nextLine();
+        Optional<Game> optionalGame = gameService.findGameById(gameId);
+        if (!optionalGame.isPresent()) {
+            System.out.println("Game with ID " + gameId + " not found. Tournament creation canceled.");
+            return;
+        }
+        Game game = optionalGame.get();
         System.out.print("Enter start date (YYYY-MM-DD): ");
         LocalDate startDate = LocalDate.parse(scanner.nextLine());
 
@@ -386,11 +392,11 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
                 tournamentToUpdate.setTitle(newTitle);
             }
 
-            System.out.print("Enter new game name (leave blank to keep current): ");
-            String newGame = scanner.nextLine();
-            if (!newGame.isEmpty()) {
-                tournamentToUpdate.setGame(newGame);
-            }
+//            System.out.print("Enter new game name (leave blank to keep current): ");
+//            String newGame = scanner.nextLine();
+//            if (!newGame.isEmpty()) {
+//                tournamentToUpdate.setGame(newGame);
+//            }
 
             System.out.print("Enter new start date (YYYY-MM-DD) or leave blank to keep current: ");
             String startDateInput = scanner.nextLine();
