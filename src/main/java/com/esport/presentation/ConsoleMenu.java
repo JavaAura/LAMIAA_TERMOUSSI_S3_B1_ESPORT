@@ -150,6 +150,18 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
                 int newAge = Integer.parseInt(ageInput);
                 player.setAge(newAge);
             }
+            // Update team
+            System.out.print("Enter new team ID (leave blank to keep current): ");
+            String teamIdInput = scanner.nextLine();
+            if (!teamIdInput.isEmpty()) {
+                Long newTeamId = Long.parseLong(teamIdInput);
+                Optional<Team> optionalTeam = teamService.findTeamById(newTeamId);
+                if (optionalTeam.isPresent()) {
+                    player.setTeam(optionalTeam.get());
+                } else {
+                    System.out.println("Team with ID " + newTeamId + " not found. Keeping current team.");
+                }
+            }
 
             playerService.modifyPlayer(player);
             System.out.println("Player updated successfully.");
