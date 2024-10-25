@@ -16,19 +16,29 @@ import java.util.Scanner;
 
 public class ConsoleMenu {
 
-    private final PlayerService playerService;
+
     private final TeamService teamService;
+    private final PlayerService playerService;
     private final TournamentService tournamentService;
     private final GameService gameService;
     private final Scanner scanner;
 
-    public ConsoleMenu(ApplicationContext context) {
-        this.playerService = context.getBean(PlayerService.class);
-        this.teamService = context.getBean(TeamService.class);
-        this.tournamentService = context.getBean(TournamentService.class);
-        this.gameService=context.getBean(GameService.class);
-        this.scanner = new Scanner(System.in);
-    }
+//    public ConsoleMenu(ApplicationContext context) {
+//
+//        this.teamService = context.getBean(TeamService.class);
+//        this.playerService = context.getBean(PlayerService.class);
+//        this.tournamentService = context.getBean(TournamentService.class);
+//        this.gameService=context.getBean(GameService.class);
+//        this.scanner = new Scanner(System.in);
+//    }
+public ConsoleMenu(TeamService teamService, PlayerService playerService,
+                   TournamentService tournamentService, GameService gameService) {
+    this.teamService = teamService;
+    this.playerService = playerService;
+    this.tournamentService = tournamentService;
+    this.gameService = gameService;
+    this.scanner = new Scanner(System.in);
+}
     public void showMenu() {
         while (true) {
             System.out.println("\n=== Menu ===");
@@ -53,6 +63,7 @@ public class ConsoleMenu {
                     manageGames();
                     break;
                 case 5:
+                    System.out.println("Exiting...");
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -90,7 +101,6 @@ public class ConsoleMenu {
                     viewPlayers();
                     break;
                 case 5:
-                    System.out.println("Exiting...");
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -511,11 +521,13 @@ public class ConsoleMenu {
         }
     }
     private void addGame() {
+        scanner.nextLine();
         System.out.print("Enter game name: ");
         String name = scanner.nextLine();
 
         System.out.print("Enter difficulty (1-10): ");
         int difficulty = scanner.nextInt();
+        scanner.nextLine();
 
         System.out.print("Enter average duration (in minutes): ");
         int averageDuration = scanner.nextInt();
@@ -589,7 +601,8 @@ public class ConsoleMenu {
 
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-        ConsoleMenu consoleMenu = new ConsoleMenu(context);
+//        ConsoleMenu consoleMenu = new ConsoleMenu(context);
+        ConsoleMenu consoleMenu = context.getBean(ConsoleMenu.class);
         consoleMenu.showMenu();
     }
 

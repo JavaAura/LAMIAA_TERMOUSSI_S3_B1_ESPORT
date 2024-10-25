@@ -5,9 +5,12 @@
              version="2.2">
     <persistence-unit name="esportPU" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-
+        <class>com.esport.model.Player</class>
+        <class>com.esport.model.Team</class>
+        <class>com.esport.model.Game</class>
+        <class>com.esport.model.Tournament</class>
         <properties>
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:esportdb;DB_CLOSE_DELAY=-1"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:file:./esportdb"/>
             <property name="javax.persistence.jdbc.user" value="sa"/>
             <property name="javax.persistence.jdbc.password" value=""/>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
