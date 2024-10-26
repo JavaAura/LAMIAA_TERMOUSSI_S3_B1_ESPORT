@@ -127,6 +127,12 @@ public class Tournament {
     public void setTeams(List<Team> teams) {
         this.teams = teams;
     }
+    public void addTeam(Team team) {
+        if (team != null && !teams.contains(team)) {
+            teams.add(team);
+            team.getTournaments().add(this);
+        }
+    }
 
     public int getEstimatedDuration() {
         return estimatedDuration;

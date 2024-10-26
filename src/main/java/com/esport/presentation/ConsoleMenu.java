@@ -305,7 +305,8 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
             System.out.println("2. Update Tournament");
             System.out.println("3. Delete Tournament");
             System.out.println("4. View Tournaments");
-            System.out.println("5. Back to Menu");
+            System.out.println("5. Add Team to Tournament");
+            System.out.println("6. Back to Menu");
 
             int choice = getUserChoice();
             switch (choice) {
@@ -322,10 +323,38 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
                     viewTournaments();
                     break;
                 case 5:
+                    addTeamToTournamentOption();
+                    break;
+                case 6:
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
+        }
+    }
+    private void addTeamToTournamentOption() {
+        System.out.print("Enter Tournament ID: ");
+        Long tournamentId = scanner.nextLong();
+
+        System.out.print("Enter Team ID: ");
+        Long teamId = scanner.nextLong();
+        Optional<Tournament> tournamentOpt = tournamentService.findTournamentById(tournamentId);
+        if (!tournamentOpt.isPresent()) {
+            System.out.println("Tournament not found with ID: " + tournamentId);
+            return;
+        }
+
+        Tournament tournament = tournamentOpt.get();
+        System.out.println("Current teams in tournament before adding: " + tournament.getTeams());
+
+        tournamentService.addTeamToTournament(tournamentId, teamId);
+
+        Optional<Tournament> updatedTournamentOpt = tournamentService.findTournamentById(tournamentId);
+
+        if (updatedTournamentOpt.isPresent()) {
+            System.out.println("Current teams in tournament after adding: " + updatedTournamentOpt.get().getTeams());
+        } else {
+            System.out.println("Unable to retrieve updated tournament state.");
         }
     }
     private void addTournament() {
@@ -403,12 +432,6 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
             if (!newTitle.isEmpty()) {
                 tournamentToUpdate.setTitle(newTitle);
             }
-
-//            System.out.print("Enter new game name (leave blank to keep current): ");
-//            String newGame = scanner.nextLine();
-//            if (!newGame.isEmpty()) {
-//                tournamentToUpdate.setGame(newGame);
-//            }
 
             System.out.print("Enter new start date (YYYY-MM-DD) or leave blank to keep current: ");
             String startDateInput = scanner.nextLine();
@@ -591,7 +614,6 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
 
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-//        ConsoleMenu consoleMenu = new ConsoleMenu(context);
         ConsoleMenu consoleMenu = context.getBean(ConsoleMenu.class);
         consoleMenu.showMenu();
     }
