@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 public class TournamentRepositoryImpl implements TournamentRepository {
@@ -17,6 +18,7 @@ public class TournamentRepositoryImpl implements TournamentRepository {
     private static final String PERSISTENCE_UNIT_NAME = "cycloneJPA";
     private final TournamentDao tournamentDAO;
 
+    @PersistenceContext
     private EntityManager entityManager;
     private EntityManagerFactory emf;
 
@@ -34,7 +36,6 @@ public class TournamentRepositoryImpl implements TournamentRepository {
             logger.error("Failed to initialize EntityManager", e);
         }
     }
-
     @Override
     public Tournament addTournament(Tournament tournament) {
         return tournamentDAO.save(tournament);

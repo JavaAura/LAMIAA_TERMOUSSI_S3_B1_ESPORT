@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 public class TeamRepositoryImpl implements TeamRepository {
@@ -17,7 +18,7 @@ public class TeamRepositoryImpl implements TeamRepository {
     private static final Logger logger = LoggerFactory.getLogger(TeamRepositoryImpl.class);
     private static final String PERSISTENCE_UNIT_NAME = "cycloneJPA";
     private final TeamDao teamDAO;
-
+    @PersistenceContext
     private EntityManager entityManager;
     private EntityManagerFactory emf;
 
@@ -35,7 +36,6 @@ public class TeamRepositoryImpl implements TeamRepository {
             logger.error("Failed to initialize EntityManager", e);
         }
     }
-
     @Override
     public Team addTeam(Team team) {
         return teamDAO.save(team);

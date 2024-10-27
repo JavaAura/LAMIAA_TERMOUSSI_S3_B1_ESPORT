@@ -5,6 +5,8 @@ import com.esport.model.Tournament;
 import com.esport.repository.impl.TeamRepositoryImpl;
 import com.esport.repository.impl.TournamentRepositoryImpl;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.Optional;
 
 public class TournamentService {
     private final TournamentRepositoryImpl tournamentRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
     private final TeamRepositoryImpl teamRepository;
     public TournamentService() {
         this.teamRepository = new TeamRepositoryImpl();
@@ -48,6 +52,7 @@ public class TournamentService {
             team.getTournaments().add(tournament);
             tournamentRepository.modifyTournament(tournament);
             teamRepository.modifyTeam(team);
+
             System.out.println("Team added to the tournament successfully.");
         } else {
             System.out.println("Either the tournament or team does not exist.");
