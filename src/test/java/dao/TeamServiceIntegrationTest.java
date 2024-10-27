@@ -86,7 +86,7 @@ public class TeamServiceIntegrationTest {
     @Test
     void testRemoveTeam() {
         Player player = new Player("Player 1", 25, null);
-        Team team = new Team("Team A", Arrays.asList(player), Collections.emptyList(), 1); 
+        Team team = new Team("Team A", Arrays.asList(player), Collections.emptyList(), 1);
 
         Team addedTeam = teamService.addTeam(team);
 
