@@ -88,11 +88,17 @@ public class TournamentDaoImpl implements TournamentDao {
     }
 
     @Override
-    public Long calculateEstimatedDurationOfTournament(Long tournamentId) {
-//        calcul de base
-        long estimatedDuration =0;
+    public long calculateEstimatedDurationOfTournament(Long tournamentId) {
+        Tournament tournament = findById(tournamentId);
+        if (tournament == null) {
+            logger.error("Tournament with ID " + tournamentId + " not found.");
+            return 0;
+        }
+        int numberOfTeams = tournament.getTeams().size();
+        int averageMatchDuration = tournament.getEstimatedDuration();
+        int breakTime = tournament.getBreakTime();
 
-        return estimatedDuration;
+        return ((long) numberOfTeams * averageMatchDuration) + breakTime;
     }
 
 }

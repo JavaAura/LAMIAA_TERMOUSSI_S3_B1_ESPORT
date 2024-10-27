@@ -14,5 +14,6 @@ public interface TournamentRepository {
     Tournament modifyTournament(Tournament tournament);
 
     void removeTournament(Long id);
+    long calculateEstimatedDurationOfTournament(Long tournamentId);
 
 }

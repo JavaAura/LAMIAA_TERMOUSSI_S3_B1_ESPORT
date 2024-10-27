@@ -46,7 +46,8 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
             System.out.println("2. Manage Teams");
             System.out.println("3. Manage Tournaments");
             System.out.println("4. Manage Games");
-            System.out.println("5. Exit");
+            System.out.println("5. Manage Games");
+            System.out.println("6. Exit");
 
             int choice = getUserChoice();
             switch (choice) {
@@ -63,6 +64,9 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
                     manageGames();
                     break;
                 case 5:
+                    calculateEstimatedDuration();
+                    break;
+                case 6:
                     System.out.println("Exiting...");
                     return;
                 default:
@@ -75,7 +79,18 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
         System.out.print("Enter your choice: ");
         return scanner.nextInt();
     }
+    private void calculateEstimatedDuration() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the tournament ID: ");
+        Long tournamentId = scanner.nextLong();
 
+        long estimatedDuration = tournamentService.calculateEstimatedDuration(tournamentId);
+        if (estimatedDuration > 0) {
+            System.out.println("Estimated duration of tournament with ID " + tournamentId + ": " + estimatedDuration + " minutes.");
+        } else {
+            System.out.println("Could not calculate duration. Please check the tournament ID.");
+        }
+    }
 
     private void managePlayers() {
         while (true) {
@@ -310,7 +325,9 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
             System.out.println("3. Delete Tournament");
             System.out.println("4. View Tournaments");
             System.out.println("5. Add Team to Tournament");
-            System.out.println("6. Back to Menu");
+            System.out.println("6. Remove Team from Tournament");
+            System.out.println("7. Back to Menu");
+
 
             int choice = getUserChoice();
             switch (choice) {
@@ -330,11 +347,31 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
                     addTeamToTournamentOption();
                     break;
                 case 6:
+                    removeTeamFromTournamentOption();
+                case 7:
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
         }
+    }
+    public void removeTeamFromTournamentOption() {
+        System.out.print("Enter Tournament ID: ");
+        Long tournamentId = scanner.nextLong();
+        Optional<Tournament> tournamentOpt = tournamentService.findTournamentById(tournamentId);
+        if (!tournamentOpt.isPresent()) {
+            System.out.println("Tournament not found with ID: " + tournamentId);
+            return;
+        }
+        System.out.print("Enter Team ID: ");
+        Long teamId = scanner.nextLong();
+        Optional<Team> teamOpt = teamService.findTeamById(teamId);
+        if (!teamOpt.isPresent()) {
+            System.out.println("Team not found with ID: " + teamId);
+            return;
+        }
+
+        tournamentService.removeTeamFromTournament(tournamentId, teamId);
     }
     private void addTeamToTournamentOption() {
         System.out.print("Enter Tournament ID: ");

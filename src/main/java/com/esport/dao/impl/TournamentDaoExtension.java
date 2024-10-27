@@ -90,9 +90,20 @@ public class TournamentDaoExtension implements TournamentDao {
     }
 
     @Override
-    public Long calculateEstimatedDurationOfTournament(Long tournamentId) {
-        //calcul avance
-      long duration=0;
-      return duration;
+    public long calculateEstimatedDurationOfTournament(Long tournamentId) {
+        Tournament tournament = findById(tournamentId);
+        if (tournament == null) {
+            logger.error("Tournament with ID " + tournamentId + " not found.");
+            return 0;
+        }
+
+        int numberOfTeams = tournament.getTeams().size();
+        int averageMatchDuration = tournament.getEstimatedDuration();
+        int breakTime = tournament.getBreakTime();
+        int gameDifficulty = tournament.getGame().getDifficulty();
+        int ceremonyTime = tournament.getCeremonyTime();
+
+        return ((long) numberOfTeams * averageMatchDuration * gameDifficulty) + breakTime + ceremonyTime;
+
     }
 }

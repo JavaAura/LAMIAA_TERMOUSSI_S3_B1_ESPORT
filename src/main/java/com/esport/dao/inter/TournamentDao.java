@@ -11,5 +11,5 @@ public interface TournamentDao {
     Tournament update(Tournament tournament);
     void delete(Long id);
 
-    Long calculateEstimatedDurationOfTournament(Long tournamentId);
+    long calculateEstimatedDurationOfTournament(Long tournamentId);
 }

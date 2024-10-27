@@ -42,6 +42,9 @@ public class TournamentService {
     public void removeTournament(Long id) {
         tournamentRepository.removeTournament(id);
     }
+    public long calculateEstimatedDuration(Long tournamentId) {
+        return tournamentRepository.calculateEstimatedDurationOfTournament(tournamentId);
+    }
     @Transactional
     public void addTeamToTournament(Long tournamentId, Long teamId) {
         Tournament tournament = tournamentRepository.findTournamentById(tournamentId);
@@ -59,4 +62,19 @@ public class TournamentService {
         }
     }
 
+    @Transactional
+    public void removeTeamFromTournament(Long tournamentId, Long teamId) {
+        Tournament tournament = tournamentRepository.findTournamentById(tournamentId);
+        Team team = teamRepository.findTeamById(teamId);
+        if (tournament != null && team != null) {
+            tournament.getTeams().remove(team);
+            team.getTournaments().remove(tournament);
+            tournamentRepository.modifyTournament(tournament);
+            teamRepository.modifyTeam(team);
+
+            System.out.println("Team removed from the tournament successfully.");
+        } else {
+            System.out.println("Either the tournament or team does not exist.");
+        }
+    }
 }

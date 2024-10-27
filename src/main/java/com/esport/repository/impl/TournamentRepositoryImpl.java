@@ -60,7 +60,10 @@ public class TournamentRepositoryImpl implements TournamentRepository {
     public void removeTournament(Long id) {
         tournamentDAO.delete(id);
     }
-
+    @Override
+    public long calculateEstimatedDurationOfTournament(Long tournamentId) {
+        return tournamentDAO.calculateEstimatedDurationOfTournament(tournamentId);
+    }
     public void close() {
         if (entityManager != null && entityManager.isOpen()) {
             entityManager.close();
