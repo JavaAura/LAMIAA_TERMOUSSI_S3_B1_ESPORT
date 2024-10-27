@@ -125,6 +125,10 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
         }
         Player player = new Player(username, age, team);
         playerService.addPlayer(player);
+        if (team != null) {
+            team.getPlayers().add(player);
+            teamService.modifyTeam(team);
+        }
         System.out.println("Player added successfully.");
     }
 
