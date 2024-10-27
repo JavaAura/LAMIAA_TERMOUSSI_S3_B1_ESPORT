@@ -52,4 +52,7 @@
     <bean id="teamService" class="com.esport.service.TeamService"/>
     <bean id="tournamentService" class="com.esport.service.TournamentService"/>
     <bean id="gameService" class="com.esport.service.GameService"/>
+
+<!---->
+
 </beans>
