@@ -46,7 +46,7 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
             System.out.println("2. Manage Teams");
             System.out.println("3. Manage Tournaments");
             System.out.println("4. Manage Games");
-            System.out.println("5. Manage Games");
+            System.out.println("5. Calcul Estimated Duration");
             System.out.println("6. Exit");
 
             int choice = getUserChoice();
@@ -84,7 +84,7 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
         System.out.print("Enter the tournament ID: ");
         Long tournamentId = scanner.nextLong();
 
-        long estimatedDuration = tournamentService.calculateEstimatedDuration(tournamentId);
+        long estimatedDuration = tournamentService.obtainEstimatedDurationOfTournament(tournamentId);
         if (estimatedDuration > 0) {
             System.out.println("Estimated duration of tournament with ID " + tournamentId + ": " + estimatedDuration + " minutes.");
         } else {

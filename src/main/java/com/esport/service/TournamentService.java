@@ -4,6 +4,7 @@ import com.esport.model.Team;
 import com.esport.model.Tournament;
 import com.esport.repository.impl.TeamRepositoryImpl;
 import com.esport.repository.impl.TournamentRepositoryImpl;
+import com.esport.service.inter.TournamentServiceInter;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -12,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class TournamentService {
+public class TournamentService implements TournamentServiceInter {
     private final TournamentRepositoryImpl tournamentRepository;
     @PersistenceContext
     private EntityManager entityManager;
@@ -21,31 +22,30 @@ public class TournamentService {
         this.teamRepository = new TeamRepositoryImpl();
         this.tournamentRepository = new TournamentRepositoryImpl();
     }
-
+    @Override
     public Tournament addTournament(Tournament tournament) {
         return tournamentRepository.addTournament(tournament);
     }
-
+    @Override
     public Optional<Tournament> findTournamentById(Long id) {
         return Optional.ofNullable(tournamentRepository.findTournamentById(id));
     }
-
+    @Override
     public List<Tournament> getAllTournaments() {
         List<Tournament> tournaments = tournamentRepository.getAllTournaments();
         return tournaments != null ? tournaments : Collections.emptyList();
     }
-
+    @Override
     public Tournament modifyTournament(Tournament tournament) {
         return tournamentRepository.modifyTournament(tournament);
     }
-
+    @Override
     public void removeTournament(Long id) {
         tournamentRepository.removeTournament(id);
     }
-    public long calculateEstimatedDuration(Long tournamentId) {
-        return tournamentRepository.calculateEstimatedDurationOfTournament(tournamentId);
-    }
+
     @Transactional
+    @Override
     public void addTeamToTournament(Long tournamentId, Long teamId) {
         Tournament tournament = tournamentRepository.findTournamentById(tournamentId);
         Team team = teamRepository.findTeamById(teamId);
@@ -63,6 +63,7 @@ public class TournamentService {
     }
 
     @Transactional
+    @Override
     public void removeTeamFromTournament(Long tournamentId, Long teamId) {
         Tournament tournament = tournamentRepository.findTournamentById(tournamentId);
         Team team = teamRepository.findTeamById(teamId);
@@ -76,5 +77,9 @@ public class TournamentService {
         } else {
             System.out.println("Either the tournament or team does not exist.");
         }
+    }
+    @Override
+    public long obtainEstimatedDurationOfTournament(Long tournamentId) {
+        return tournamentRepository.calculateEstimatedDurationOfTournament(tournamentId);
     }
 }

@@ -1,5 +1,6 @@
 package com.esport.repository.impl;
 
+import com.esport.dao.impl.TournamentDaoExtension;
 import com.esport.dao.impl.TournamentDaoImpl;
 import com.esport.dao.inter.TournamentDao;
 import com.esport.model.Tournament;
@@ -23,7 +24,8 @@ public class TournamentRepositoryImpl implements TournamentRepository {
     private EntityManagerFactory emf;
 
     public TournamentRepositoryImpl() {
-        this.tournamentDAO = new TournamentDaoImpl();
+     //   this.tournamentDAO = new TournamentDaoImpl();
+        this.tournamentDAO = new TournamentDaoExtension();
         initEntityManager();
     }
 
