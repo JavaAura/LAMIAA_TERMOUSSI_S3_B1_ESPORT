@@ -5,6 +5,7 @@ import com.esport.service.GameService;
 import com.esport.service.PlayerService;
 import com.esport.service.TeamService;
 import com.esport.service.TournamentService;
+import com.esport.util.InputValidator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -16,27 +17,20 @@ import java.util.Scanner;
 
 public class ConsoleMenu {
 
-
+    private final InputValidator validator;
     private final TeamService teamService;
     private final PlayerService playerService;
     private final TournamentService tournamentService;
     private final GameService gameService;
     private final Scanner scanner;
 
-//    public ConsoleMenu(ApplicationContext context) {
-//
-//        this.teamService = context.getBean(TeamService.class);
-//        this.playerService = context.getBean(PlayerService.class);
-//        this.tournamentService = context.getBean(TournamentService.class);
-//        this.gameService=context.getBean(GameService.class);
-//        this.scanner = new Scanner(System.in);
-//    }
 public ConsoleMenu(TeamService teamService, PlayerService playerService,
                    TournamentService tournamentService, GameService gameService) {
     this.teamService = teamService;
     this.playerService = playerService;
     this.tournamentService = tournamentService;
     this.gameService = gameService;
+    this.validator = new InputValidator();
     this.scanner = new Scanner(System.in);
 }
     public void showMenu() {
@@ -124,12 +118,33 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
     }
 
     private void addPlayer() {
-        System.out.print("Enter player username: ");
-        String username = scanner.next();
-        System.out.print("Enter player age: ");
-        int age = scanner.nextInt();
-        System.out.print("Enter team ID : ");
-        Long teamId = scanner.nextLong();
+        String username;
+        while (true) {
+            System.out.print("Enter player username: ");
+            username = scanner.next();
+            if (validator.validateUsername(username)) {
+                break;
+            }
+            System.out.println("Invalid username. Please enter a non-empty username.");
+        }
+        int age;
+        while (true) {
+            System.out.print("Enter player age: ");
+            age = scanner.nextInt();
+            if (validator.validateAge(age)) {
+                break;
+            }
+            System.out.println("Invalid age. Please enter a valid age (1-119).");
+        }
+        Long teamId;
+        while (true) {
+            System.out.print("Enter team ID: ");
+            teamId = scanner.nextLong();
+            if (validator.validateTeamId(teamId)) {
+                break;
+            }
+            System.out.println("Invalid team ID. Please enter a positive team ID.");
+        }
         Optional<Team> optionalTeam = teamService.findTeamById(teamId);
         Team team = null;
 
@@ -393,34 +408,102 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
     }
     private void addTournament() {
         scanner.nextLine();
-        System.out.print("Enter tournament title: ");
-        String title = scanner.nextLine();
-        System.out.print("Enter game ID: ");
-        Long gameId = scanner.nextLong();
-        scanner.nextLine();
-        Optional<Game> optionalGame = gameService.findGameById(gameId);
-        if (!optionalGame.isPresent()) {
-            System.out.println("Game with ID " + gameId + " not found. Tournament creation canceled.");
-            return;
+
+        // Validate title
+        String title;
+        while (true) {
+            System.out.print("Enter tournament title: ");
+            title = scanner.nextLine();
+            if (validator.validateTitle(title)) {
+                break;
+            }
+            System.out.println("Invalid title. Please enter a non-empty title.");
         }
-        Game game = optionalGame.get();
-        System.out.print("Enter start date (YYYY-MM-DD): ");
-        LocalDate startDate = LocalDate.parse(scanner.nextLine());
 
-        System.out.print("Enter end date (YYYY-MM-DD): ");
-        LocalDate endDate = LocalDate.parse(scanner.nextLine());
+        // Validate game ID
+        Long gameId;
+        while (true) {
+            System.out.print("Enter game ID: ");
+            gameId = scanner.nextLong();
+            scanner.nextLine();
+            if (validator.validateGameId(gameId)) {
+                Optional<Game> optionalGame = gameService.findGameById(gameId);
+                if (optionalGame.isPresent()) {
+                    break;
+                }
+                System.out.println("Game with ID " + gameId + " not found. Please enter a valid game ID.");
+            } else {
+                System.out.println("Invalid game ID. Please enter a positive number.");
+            }
+        }
+        Game game = gameService.findGameById(gameId).get();
 
-        System.out.print("Enter expected spectator count: ");
-        int spectatorCount = Integer.parseInt(scanner.nextLine());
+        // Validate start date
+        LocalDate startDate;
+        while (true) {
+            System.out.print("Enter start date (YYYY-MM-DD): ");
+            startDate = LocalDate.parse(scanner.nextLine());
+            if (validator.validateDate(startDate)) {
+                break;
+            }
+            System.out.println("Invalid date. Start date cannot be in the past.");
+        }
 
-        System.out.print("Enter estimated duration (in minutes): ");
-        int estimatedDuration = Integer.parseInt(scanner.nextLine());
+        // Validate end date
+        LocalDate endDate;
+        while (true) {
+            System.out.print("Enter end date (YYYY-MM-DD): ");
+            endDate = LocalDate.parse(scanner.nextLine());
+            if (validator.validateDate(endDate) && !endDate.isBefore(startDate)) {
+                break;
+            }
+            System.out.println("Invalid date. End date must be after the start date and cannot be in the past.");
+        }
 
-        System.out.print("Enter break time between matches (in minutes): ");
-        int breakTime = Integer.parseInt(scanner.nextLine());
+        // Validate spectator count
+        int spectatorCount;
+        while (true) {
+            System.out.print("Enter expected spectator count: ");
+            spectatorCount = Integer.parseInt(scanner.nextLine());
+            if (validator.validateSpectatorCount(spectatorCount)) {
+                break;
+            }
+            System.out.println("Invalid spectator count. Please enter a non-negative number.");
+        }
 
-        System.out.print("Enter ceremony time (in minutes): ");
-        int ceremonyTime = Integer.parseInt(scanner.nextLine());
+        // Validate estimated duration
+        int estimatedDuration;
+        while (true) {
+            System.out.print("Enter estimated duration (in minutes): ");
+            estimatedDuration = Integer.parseInt(scanner.nextLine());
+            if (validator.validateDuration(estimatedDuration)) {
+                break;
+            }
+            System.out.println("Invalid duration. Please enter a positive number.");
+        }
+
+        // Validate break time
+        int breakTime;
+        while (true) {
+            System.out.print("Enter break time between matches (in minutes): ");
+            breakTime = Integer.parseInt(scanner.nextLine());
+            if (validator.validateBreakTime(breakTime)) {
+                break;
+            }
+            System.out.println("Invalid break time. Please enter a non-negative number.");
+        }
+
+        // Validate ceremony time
+        int ceremonyTime;
+        while (true) {
+            System.out.print("Enter ceremony time (in minutes): ");
+            ceremonyTime = Integer.parseInt(scanner.nextLine());
+            if (validator.validateCeremonyTime(ceremonyTime)) {
+                break;
+            }
+            System.out.println("Invalid ceremony time. Please enter a non-negative number.");
+        }
+
         TournamentStatus status = getTournamentStatusFromUser();
         Tournament tournament = new Tournament(title, game, startDate, endDate, spectatorCount, new ArrayList<>(), estimatedDuration, breakTime, ceremonyTime, status);
         tournamentService.addTournament(tournament);
