@@ -44,8 +44,10 @@ public class TournamentService {
         Team team = teamRepository.findTeamById(teamId);
 
         if (tournament != null && team != null) {
-            tournament.addTeam(team);
-            tournamentRepository.addTournament(tournament);
+            tournament.getTeams().add(team);
+            team.getTournaments().add(tournament);
+            tournamentRepository.modifyTournament(tournament);
+            teamRepository.modifyTeam(team);
             System.out.println("Team added to the tournament successfully.");
         } else {
             System.out.println("Either the tournament or team does not exist.");

@@ -343,19 +343,12 @@ public ConsoleMenu(TeamService teamService, PlayerService playerService,
             System.out.println("Tournament not found with ID: " + tournamentId);
             return;
         }
-
-        Tournament tournament = tournamentOpt.get();
-        System.out.println("Current teams in tournament before adding: " + tournament.getTeams());
-
-        tournamentService.addTeamToTournament(tournamentId, teamId);
-
-        Optional<Tournament> updatedTournamentOpt = tournamentService.findTournamentById(tournamentId);
-
-        if (updatedTournamentOpt.isPresent()) {
-            System.out.println("Current teams in tournament after adding: " + updatedTournamentOpt.get().getTeams());
-        } else {
-            System.out.println("Unable to retrieve updated tournament state.");
+        Optional<Team> teamOpt = teamService.findTeamById(teamId);
+        if (!teamOpt.isPresent()) {
+            System.out.println("Team not found with ID: " + teamId);
+            return;
         }
+        tournamentService.addTeamToTournament(tournamentId, teamId);
     }
     private void addTournament() {
         scanner.nextLine();
